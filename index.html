@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Generate Myshortcuts+Viewer QRCode</title>
+
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<style>
+  .row {
+    margin-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="row">
+    <h1>Generate Myshortcuts+Viewer QRCode</h1>
+    <p class="lead">
+      Myshortcuts+Viewerのメモに内容を追加できるQRコードを生成します。iPhoneで生成されたQRコードを読み取れば、Myshortcuts+Viewerに登録することができます。
+    </p>
+    <p class="lead">iPhoneで入力するのが面倒くさい人向け。</p>
+  </div>
+
+  <div class="row">
+    <div id="code-area" class="col-xs-12 col-md-8">
+      <label for="code">メモを入力</label>
+      <textarea id="code" name="code" class="form-control" rows="10" placeholder="ここにメモを入力してください。"></textarea>
+      <div id="action-area">
+        <input id="generate" class="btn btn-primary btn-lg btn-block" type="button" value="QRコード作成">
+      </div>
+    </div>
+    <div class="col-xs-6 col-md-4">
+      <div id="qrcode">ここにQRコードが生成されます。</div>
+    </div>
+  </div>
+</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="js/qrcode.min.js"></script>
+<script>
+$(function () {
+
+  var qrcode = new QRCode("qrcode");
+
+  var generateQR = function () {
+    var code = $('#code').val() || '';
+    var base_url = 'myshortcuts://memo?add=';
+    var url;
+
+    if (code == '') {
+      $('#code').focus();
+      return false;
+    }
+
+    code = code.replace(/¥n/g, '');
+    url = base_url + encodeURI(code);
+
+    qrcode.makeCode(url);
+  };
+
+  $('#generate').on('click', function () {
+    generateQR();
+  });
+
+});
+</script>
+</body>
+</html>
