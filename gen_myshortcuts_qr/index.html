@@ -57,7 +57,6 @@ $(function () {
         return false;
       }, 500)
     } else {
-      code = code.replace(/¥n/g, '');
       url = base_url + encodeURI(code);
       qrcode.makeCode(url);
     }
