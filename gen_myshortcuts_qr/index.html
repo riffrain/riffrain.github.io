@@ -2,41 +2,42 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+
 <title>Generate Myshortcuts+Viewer QRCode</title>
 
-<link rel="stylesheet" href="css/bootstrap.min.css">
-<style>
-  .row {
-    margin-bottom: 10px;
-  }
-</style>
+<link rel="stylesheet" href="css/uikit.min.css">
 </head>
 <body>
-<div class="container">
-
-  <div class="row">
-    <h1>Generate Myshortcuts+Viewer QRCode</h1>
-    <p class="lead">
-      Myshortcuts+Viewerのメモに内容を追加できるQRコードを生成します。iPhoneで生成されたQRコードを読み取れば、Myshortcuts+Viewerに登録することができます。
+<div class="uk-container uk-container-center">
+  <div class="uk-grid uk-article" data-uk-grid-margin>
+    <h1 class="uk-article-title">Generate Myshortcuts+Viewer QRCode</h1>
+    <p class="uk-article-lead">
+      Myshortcuts+Viewerのメモに内容を追加できるQRコードを生成します。iPhoneで生成されたQRコードを読み取れば、Myshortcuts+Viewerに登録することができます。iPhoneで入力するのが面倒くさい人向け。
     </p>
-    <p class="lead">iPhoneで入力するのが面倒くさい人向け。</p>
   </div>
-
-  <div class="row">
-    <div id="code-area" class="col-xs-12 col-md-8">
-      <label for="code">メモを入力</label>
-      <textarea id="code" name="code" class="form-control" rows="10" placeholder="ここにメモを入力してください。"></textarea>
-      <div id="action-area">
-        <input id="generate" class="btn btn-primary btn-lg btn-block" type="button" value="QRコード作成">
+  <div class="uk-grid uk-grid-divider" data-uk-grid-match data-uk-grid-margin>
+    <div id="code-area" class="uk-width-medium-7-10 uk-width-small-1-1">
+      <div class="uk-grid">
+        <div class="uk-width-medium-1-1">
+          <p class="uk-text-bold uk-text-top">1. メモを入力</p>
+          <form class="uk-form">
+            <textarea id="code" name="code" class="uk-width-1-1" rows="15" placeholder="ここにメモを入力してください。"></textarea>
+          </form>
+        </div>
+        <div id="action-area" class="uk-width-medium-1-1 ">
+          <button id="generate" class="uk-button uk-button-primary uk-width-1-1 uk-button-large">QRコード作成</button>
+        </div>
       </div>
     </div>
-    <div class="col-xs-6 col-md-4">
-      <div id="qrcode">ここにQRコードが生成されます。</div>
+    <div class="uk-width-medium-3-10 uk-width-small-1-1">
+      <p class="uk-text-bold uk-text-top">2. ここにQRコードが生成されます。</p>
+      <div id="qrcode" class="uk-thumbnail uk-thumbnail-expand"></div>
     </div>
   </div>
 </div>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="js/uikit.min.js"></script>
 <script src="js/qrcode.min.js"></script>
 <script>
 $(function () {
@@ -49,15 +50,21 @@ $(function () {
     var url;
 
     if (code == '') {
-      $('#code').focus();
-      return false;
+      $('#code').addClass('uk-animation-shake');
+      setTimeout(function () {
+        $('#code').focus();
+        return false;
+      }, 500)
+    } else {
+      code = code.replace(/¥n/g, '');
+      url = base_url + encodeURI(code);
+      qrcode.makeCode(url);
     }
-
-    code = code.replace(/¥n/g, '');
-    url = base_url + encodeURI(code);
-
-    qrcode.makeCode(url);
   };
+
+  $('#code').on('focus', function () {
+    $(this).removeClass('uk-animation-shake');
+  });
 
   $('#generate').on('click', function () {
     generateQR();
