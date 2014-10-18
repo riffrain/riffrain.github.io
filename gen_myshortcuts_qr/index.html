@@ -47,8 +47,13 @@
       </div>
     </div>
     <div class="uk-width-medium-3-10 uk-width-small-1-1">
-      <p class="uk-text-bold uk-text-top">2. ここにQRコードが生成されます。</p>
-      <div id="qrcode" class="uk-thumbnail uk-thumbnail-expand"></div>
+        <p class="uk-text-bold uk-text-top">2. ここにQRコードが生成されます。</p>
+        <div id="qrcode" class="uk-thumbnail uk-thumbnail-expand"></div>
+        <div>
+          <form class="uk-form">
+            <input type="text" name="maked-url" id="maked-url" style="margin-top: 10px; width: 100%;" placeholder="生成されたURL" >
+          </form>
+        </div>
     </div>
   </div>
 </div>
@@ -79,6 +84,8 @@ $(function () {
     } else {
       url = base_url + encodeURI(code);
       qrcode.makeCode(url);
+
+      $('#maked-url').val(url);
     }
   };
 
